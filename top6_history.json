@@ -3,29 +3,29 @@
     "tokens": [
       {
         "token": "DOOD",
-        "score": 182
-      },
-      {
-        "token": "MERL",
         "score": 180
       },
       {
-        "token": "SKY",
+        "token": "MERL",
         "score": 178
       },
       {
+        "token": "SKY",
+        "score": 176
+      },
+      {
         "token": "MNT",
-        "score": 174
+        "score": 172
       },
       {
         "token": "VVV",
-        "score": 174
+        "score": 172
       },
       {
         "token": "ZEC",
-        "score": 174
+        "score": 172
       }
     ],
-    "timestamp": "2025-12-24T20:51:48.327576"
+    "timestamp": "2025-12-24T21:11:18.140530"
   }
 }
