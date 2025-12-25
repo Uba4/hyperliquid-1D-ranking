@@ -504,6 +504,24 @@ def main():
     
     # Step 7: Detect changes and send notification
     print("\n🔍 Step 7: Detecting changes...")
+    
+    # Debug: Show what we're comparing
+    if previous_top6:
+        prev_tokens = previous_top6.get('tokens', [])
+        curr_tokens = [token for token, score in top6]
+        print(f"📋 Previous Top 6: {', '.join(prev_tokens)}")
+        print(f"📋 Current Top 6:  {', '.join(curr_tokens)}")
+        
+        if prev_tokens != curr_tokens:
+            print("🔍 Token order changed!")
+        
+        prev_scores = previous_top6.get('scores', [])
+        curr_scores = [score for token, score in top6]
+        if prev_scores != curr_scores:
+            print("🔍 Scores changed!")
+    else:
+        print("📋 First run - no previous data to compare")
+    
     changes = detect_changes(previous_top6, top6)
     
     if changes:
