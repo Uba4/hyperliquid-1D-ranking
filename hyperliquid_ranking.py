@@ -242,6 +242,7 @@ def detect_changes(previous: Optional[Dict], current: List[Tuple[str, int]]) -> 
     """
     Detect changes between previous and current Top 6
     Returns a dict with change details or None if no changes
+    Only triggers on: new entries, dropouts, or position changes (NOT score-only changes)
     """
     if not previous:
         return None  # First run, no comparison possible
@@ -252,15 +253,14 @@ def detect_changes(previous: Optional[Dict], current: List[Tuple[str, int]]) -> 
     curr_tokens = [token for token, score in current]
     curr_scores = [score for token, score in current]
     
-    # Check if there are any changes
-    if prev_tokens == curr_tokens and prev_scores == curr_scores:
-        return None  # No changes
+    # Check if token composition or order changed (ignore scores)
+    if prev_tokens == curr_tokens:
+        return None  # Same tokens in same order = no notification
     
     changes = {
         "new_entries": [],
         "dropped_out": [],
         "position_changes": [],
-        "score_changes": [],
         "unchanged": []
     }
     
@@ -282,7 +282,7 @@ def detect_changes(previous: Optional[Dict], current: List[Tuple[str, int]]) -> 
                 "score": prev_scores[i]
             })
     
-    # Detect position and score changes
+    # Detect position changes (only for tokens that stayed in Top 6)
     for i, token in enumerate(curr_tokens):
         if token in prev_tokens:
             prev_idx = prev_tokens.index(token)
@@ -291,7 +291,8 @@ def detect_changes(previous: Optional[Dict], current: List[Tuple[str, int]]) -> 
             prev_score = prev_scores[prev_idx]
             curr_score = curr_scores[i]
             
-            if prev_pos != curr_pos or prev_score != curr_score:
+            if prev_pos != curr_pos:
+                # Position changed - this is what we care about!
                 changes["position_changes"].append({
                     "token": token,
                     "prev_position": prev_pos,
@@ -301,6 +302,7 @@ def detect_changes(previous: Optional[Dict], current: List[Tuple[str, int]]) -> 
                     "position_delta": curr_pos - prev_pos
                 })
             else:
+                # Position same (we don't care about score changes)
                 changes["unchanged"].append({
                     "token": token,
                     "position": curr_pos,
@@ -330,27 +332,14 @@ def format_telegram_notification(changes: Dict, current: List[Tuple[str, int]], 
             message += f"  • <b>{entry['token']}</b> dropped from #{entry['position']} (Score: {entry['score']})\n"
         message += "\n"
     
-    # Position changes
+    # Position changes (tokens that swapped ranks)
     if changes["position_changes"]:
         message += "🔄 <b>POSITION CHANGES:</b>\n"
         for change in changes["position_changes"]:
             arrow = "⬆️" if change['position_delta'] < 0 else "⬇️"
-            delta_str = f"({change['position_delta']:+d})" if change['position_delta'] != 0 else ""
-            score_change = f"{change['prev_score']} → {change['curr_score']}" if change['prev_score'] != change['curr_score'] else f"Score: {change['curr_score']}"
+            delta_str = f"({change['position_delta']:+d})"
             
-            if change['position_delta'] != 0:
-                message += f"  • <b>{change['token']}</b>: #{change['prev_position']} → #{change['curr_position']} {delta_str} {arrow}\n"
-                message += f"    {score_change}\n"
-            else:
-                # Position same but score changed
-                message += f"  • <b>{change['token']}</b> at #{change['curr_position']}: {score_change}\n"
-        message += "\n"
-    
-    # Unchanged (optional, can comment out if too verbose)
-    if changes["unchanged"]:
-        message += "✅ <b>UNCHANGED:</b>\n"
-        for entry in changes["unchanged"]:
-            message += f"  • <b>{entry['token']}</b> at #{entry['position']} (Score: {entry['score']})\n"
+            message += f"  • <b>{change['token']}</b>: #{change['prev_position']} → #{change['curr_position']} {delta_str} {arrow}\n"
         message += "\n"
     
     # Summary
@@ -513,12 +502,9 @@ def main():
         print(f"📋 Current Top 6:  {', '.join(curr_tokens)}")
         
         if prev_tokens != curr_tokens:
-            print("🔍 Token order changed!")
-        
-        prev_scores = previous_top6.get('scores', [])
-        curr_scores = [score for token, score in top6]
-        if prev_scores != curr_scores:
-            print("🔍 Scores changed!")
+            print("🔍 Token composition or order changed! → Will notify")
+        else:
+            print("✅ Same tokens in same order → No notification (scores changes ignored)")
     else:
         print("📋 First run - no previous data to compare")
     
@@ -529,7 +515,7 @@ def main():
         message = format_telegram_notification(changes, top6, previous_top6)
         send_telegram_message(message)
     else:
-        print("✅ No changes detected. No notification sent.")
+        print("✅ No meaningful changes detected. No notification sent.")
     
     # Step 8: Save results
     save_results(top6)
