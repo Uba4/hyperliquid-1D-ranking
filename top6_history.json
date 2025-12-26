@@ -61,29 +61,29 @@
     "tokens": [
       {
         "token": "DOOD",
-        "score": 202
+        "score": 206
       },
       {
         "token": "VVV",
-        "score": 198
+        "score": 202
       },
       {
         "token": "SKY",
-        "score": 197
+        "score": 201
       },
       {
         "token": "CC",
-        "score": 197
+        "score": 201
       },
       {
         "token": "MERL",
-        "score": 196
+        "score": 200
       },
       {
         "token": "SYRUP",
-        "score": 192
+        "score": 196
       }
     ],
-    "timestamp": "2025-12-26T17:11:20.320145"
+    "timestamp": "2025-12-26T17:31:43.014828"
   }
 }
