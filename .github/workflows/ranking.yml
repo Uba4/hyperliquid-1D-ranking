@@ -45,5 +45,5 @@ jobs:
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add top6_history.json last_top6.json
+        git add top6_history.json last_top6.json token_tracking.json
         git diff --quiet && git diff --staged --quiet || (git commit -m "Update top 6 rankings - $(date -u +'%Y-%m-%d %H:%M UTC')" && git push)
