@@ -65,14 +65,14 @@
       },
       {
         "token": "CC",
-        "score": 190
-      },
-      {
-        "token": "MERL",
-        "score": 187
+        "score": 189
       },
       {
         "token": "VVV",
+        "score": 188
+      },
+      {
+        "token": "MERL",
         "score": 187
       },
       {
@@ -84,6 +84,6 @@
         "score": 182
       }
     ],
-    "timestamp": "2025-12-26T11:29:56.093714"
+    "timestamp": "2025-12-26T11:40:43.898476"
   }
 }
