@@ -90,29 +90,29 @@
     "tokens": [
       {
         "token": "DOOD",
-        "score": 200
-      },
-      {
-        "token": "CC",
-        "score": 198
-      },
-      {
-        "token": "VVV",
-        "score": 196
-      },
-      {
-        "token": "SKY",
         "score": 194
       },
       {
-        "token": "MERL",
+        "token": "CC",
         "score": 192
       },
       {
-        "token": "ZEC",
+        "token": "VVV",
         "score": 190
+      },
+      {
+        "token": "SKY",
+        "score": 188
+      },
+      {
+        "token": "MERL",
+        "score": 186
+      },
+      {
+        "token": "ZEC",
+        "score": 184
       }
     ],
-    "timestamp": "2025-12-27T05:52:22.288638"
+    "timestamp": "2025-12-27T06:18:53.077940"
   }
 }
