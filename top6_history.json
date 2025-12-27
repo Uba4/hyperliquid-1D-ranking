@@ -85,5 +85,34 @@
       }
     ],
     "timestamp": "2025-12-26T23:49:27.926189"
+  },
+  "2025-12-27": {
+    "tokens": [
+      {
+        "token": "DOOD",
+        "score": 196
+      },
+      {
+        "token": "CC",
+        "score": 194
+      },
+      {
+        "token": "VVV",
+        "score": 192
+      },
+      {
+        "token": "SYRUP",
+        "score": 190
+      },
+      {
+        "token": "SKY",
+        "score": 188
+      },
+      {
+        "token": "MERL",
+        "score": 186
+      }
+    ],
+    "timestamp": "2025-12-27T00:56:28.171653"
   }
 }
